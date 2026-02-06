@@ -14,14 +14,13 @@ Integrate OpenZaak case management (Zaakgericht Werken) APIs with your Nextcloud
 - Common Ground / ZGW API compliant
 - Free and open source under EUPL
 
-**Requirements:**
-- OpenZaak server instance
-- Nextcloud 28 or higher
+This is an ExApp (External Application) - Nextcloud will automatically manage the OpenZaak container.
+
+**Note:** OpenZaak requires PostgreSQL with PostGIS and Redis for full functionality.
     ]]></description>
     <version>0.1.0</version>
     <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
-    <namespace>OpenZaak</namespace>
     <category>office</category>
     <category>integration</category>
     <website>https://github.com/ConductionNL/OpenZaak</website>
@@ -37,20 +36,81 @@ Integrate OpenZaak case management (Zaakgericht Werken) APIs with your Nextcloud
     </documentation>
 
     <dependencies>
-        <php min-version="8.0" min-int-size="64"/>
-        <database min-version="10">pgsql</database>
-        <database>sqlite</database>
-        <database min-version="8.0">mysql</database>
-        <nextcloud min-version="28" max-version="33"/>
+        <nextcloud min-version="30" max-version="33"/>
     </dependencies>
 
-    <navigations>
-        <navigation>
-            <id>openzaak</id>
-            <name>OpenZaak</name>
-            <route>openzaak.page.index</route>
-            <icon>app.svg</icon>
-            <type>link</type>
-        </navigation>
-    </navigations>
+    <external-app>
+        <docker-install>
+            <registry>localhost:5000</registry>
+            <image>openzaak-exapp</image>
+            <image-tag>test</image-tag>
+        </docker-install>
+
+        <routes>
+            <route>
+                <url>.*</url>
+                <verb>GET,POST,PUT,DELETE,PATCH,OPTIONS</verb>
+                <access_level>USER</access_level>
+                <headers_to_exclude>[]</headers_to_exclude>
+            </route>
+        </routes>
+
+        <environment-variables>
+            <variable>
+                <name>DB_HOST</name>
+                <display-name>Database Host</display-name>
+                <description>PostgreSQL database host (requires PostGIS extension)</description>
+            </variable>
+            <variable>
+                <name>DB_NAME</name>
+                <display-name>Database Name</display-name>
+                <description>PostgreSQL database name</description>
+            </variable>
+            <variable>
+                <name>DB_USER</name>
+                <display-name>Database User</display-name>
+                <description>PostgreSQL database user</description>
+            </variable>
+            <variable>
+                <name>DB_PASSWORD</name>
+                <display-name>Database Password</display-name>
+                <description>PostgreSQL database password</description>
+            </variable>
+            <variable>
+                <name>SECRET_KEY</name>
+                <display-name>Secret Key</display-name>
+                <description>Django secret key (generate a random string)</description>
+            </variable>
+            <variable>
+                <name>ALLOWED_HOSTS</name>
+                <display-name>Allowed Hosts</display-name>
+                <description>Comma-separated list of allowed hostnames (use * for development)</description>
+            </variable>
+            <variable>
+                <name>CACHE_DEFAULT</name>
+                <display-name>Redis Cache URL</display-name>
+                <description>Redis URL for caching (e.g., redis:6379/0)</description>
+            </variable>
+            <variable>
+                <name>KEYCLOAK_URL</name>
+                <display-name>Keycloak URL</display-name>
+                <description>Keycloak server URL for SSO (e.g., http://keycloak:8080)</description>
+            </variable>
+            <variable>
+                <name>KEYCLOAK_REALM</name>
+                <display-name>Keycloak Realm</display-name>
+                <description>Keycloak realm name (default: commonground)</description>
+            </variable>
+            <variable>
+                <name>KEYCLOAK_CLIENT_ID</name>
+                <display-name>Keycloak Client ID</display-name>
+                <description>OIDC client ID for this app (default: openzaak)</description>
+            </variable>
+            <variable>
+                <name>KEYCLOAK_CLIENT_SECRET</name>
+                <display-name>Keycloak Client Secret</display-name>
+                <description>OIDC client secret for this app</description>
+            </variable>
+        </environment-variables>
+    </external-app>
 </info>
