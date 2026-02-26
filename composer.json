@@ -1,7 +1,7 @@
 {
 	"name": "conductionnl/openzaak",
 	"description": "OpenZaak ZGW API integration for Nextcloud",
-	"license": "AGPL-3.0-or-later",
+	"license": "EUPL-1.2",
 	"authors": [
 		{
 			"name": "Conduction b.v.",
