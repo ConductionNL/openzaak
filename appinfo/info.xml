@@ -18,7 +18,7 @@ This is an ExApp (External Application) - Nextcloud will automatically manage th
 
 **Note:** OpenZaak requires PostgreSQL with PostGIS and Redis for full functionality.
     ]]></description>
-    <version>0.1.1-unstable.2</version>
+    <version>0.1.2</version>
     <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
     <category>office</category>
