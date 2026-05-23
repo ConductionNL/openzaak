@@ -1,84 +1,143 @@
-# OpenZaak for Nextcloud
+<p align="center">
+  <img src="img/app.svg" alt="OpenZaak logo" width="120">
+</p>
 
-Nextcloud integration app for [OpenZaak](https://openzaak.org/) ZGW (Zaakgericht Werken) API backend.
+<h1 align="center">OpenZaak for Nextcloud</h1>
 
-## About This App
+<p align="center">
+  Nextcloud ExApp wrapper for the OpenZaak ZGW API reference implementation
+</p>
 
-This is a **Nextcloud wrapper app** that provides integration between Nextcloud and an external OpenZaak server. It does not contain the OpenZaak platform itself - it connects your Nextcloud instance to a running OpenZaak deployment.
+<p align="center">
+  <a href="https://github.com/ConductionNL/openzaak/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/openzaak?style=flat-square" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-EUPL--1.2-blue?style=flat-square" alt="License: EUPL-1.2"></a>
+</p>
 
-**For OpenZaak documentation, see:** https://open-zaak.readthedocs.io/
+---
 
-## What This App Does
-
-- Adds an OpenZaak entry to the Nextcloud navigation
-- Provides a UI within Nextcloud for managing cases (zaken) and documents
-- Integrates OpenZaak Documenten API with Nextcloud Files
-- Bridges the ZGW ecosystem with Nextcloud's file management
+> **DISCLAIMER -- PLEASE READ CAREFULLY**
+>
+> This Nextcloud ExApp is a **community wrapper** that packages [OpenZaak](https://github.com/open-zaak/open-zaak) for deployment through Nextcloud's AppAPI. OpenZaak is developed and maintained by [Maykin Media](https://www.maykinmedia.nl/).
+>
+> **Conduction B.V. does NOT provide:**
+> - Support, SLAs, or helpdesk services for OpenZaak
+> - Licensing, guarantees, or warranties of any kind
+> - Commercial services, consulting, or training for OpenZaak
+>
+> For **professional support, licensing, pricing, and services**, contact the original developers at **[Maykin Media](https://www.maykinmedia.nl/)**.
+>
+> This wrapper is provided as-is under the EUPL-1.2 license, without any express or implied warranty. Use at your own risk.
 
 ## What is OpenZaak?
 
-[OpenZaak](https://openzaak.org/) is the reference implementation of the Dutch [ZGW (Zaakgericht Werken) APIs](https://vng-realisatie.github.io/gemma-zaken/). It provides the standard backend for case management used by Dutch municipalities and government organizations.
+[OpenZaak](https://openzaak.org/) is the open-source reference implementation of the Dutch [ZGW (Zaakgericht Werken) APIs](https://vng-realisatie.github.io/gemma-zaken/), built and maintained by [Maykin Media](https://www.maykinmedia.nl/). ZGW -- Zaakgericht Werken -- is the national standard for case-oriented work used by Dutch municipalities and government organizations.
 
-ZGW APIs provided by OpenZaak:
-- **Zaken API** - Case management (create, update, close cases)
-- **Documenten API** - Document storage and management
-- **Catalogi API** - Case type catalogs and definitions
-- **Besluiten API** - Decision management and tracking
-- **Autorisaties API** - Authorization and access control
+OpenZaak provides the following ZGW API components:
+
+- **Zaken API** -- Case management (create, update, close cases)
+- **Documenten API** -- Document storage and management
+- **Catalogi API** -- Case type catalogs and definitions
+- **Besluiten API** -- Decision management and tracking
+- **Autorisaties API** -- Authorization and access control
+
+For full OpenZaak documentation, see [open-zaak.readthedocs.io](https://open-zaak.readthedocs.io/).
+
+## What This App Does
+
+This is a **Nextcloud ExApp** (External Application) that packages OpenZaak as a containerized application managed by Nextcloud's [AppAPI](https://github.com/nextcloud/app_api). It does not modify or fork OpenZaak itself.
+
+When installed, Nextcloud will:
+
+- Pull and deploy the OpenZaak container automatically
+- Manage the container lifecycle (start, stop, health checks)
+- Expose ZGW API endpoints through the Nextcloud reverse proxy
+- Handle AppAPI registration and authentication
 
 ## Requirements
 
-- Nextcloud 28 or higher
-- PHP 8.0 or higher
-- A running [OpenZaak](https://open-zaak.readthedocs.io/en/stable/installation/index.html) server instance
+| Requirement | Details |
+|---|---|
+| **Nextcloud** | 30 or higher |
+| **AppAPI** | Installed and configured with a deploy daemon |
+| **Docker** | Available for ExApp container management |
+| **PostgreSQL + PostGIS** | Database with spatial extension (required by OpenZaak) |
+| **Redis** | Caching and session storage (required by OpenZaak) |
 
 ## Installation
 
-### From the Nextcloud App Store
+### Via Nextcloud App Store
 
-Search for "OpenZaak" in your Nextcloud app store and click Install.
+1. Ensure AppAPI is installed and configured with a working deploy daemon
+2. Search for "OpenZaak" in the Nextcloud app store
+3. Click Install -- Nextcloud will pull and start the container automatically
 
-### Manual Installation
+### Manual Registration
 
-1. Download the latest release from [GitHub Releases](https://github.com/ConductionNL/openzaak/releases)
-2. Extract to your Nextcloud `apps` or `custom_apps` directory
-3. Enable the app: `occ app:enable openzaak`
+```bash
+# Register the ExApp with AppAPI
+docker exec -u www-data nextcloud php occ app_api:app:register \
+    openzaak your_daemon_name \
+    --info-xml /path/to/appinfo/info.xml \
+    --force-scopes
+
+# Enable the ExApp
+docker exec -u www-data nextcloud php occ app_api:app:enable openzaak
+```
 
 ## Configuration
 
-After installation, configure the OpenZaak server URL and JWT credentials in the Nextcloud admin settings. OpenZaak uses JWT (HS256) tokens for API authentication.
+Configure via Nextcloud Admin Settings or environment variables passed to the container:
 
-## Development
+| Variable | Description |
+|---|---|
+| `DB_HOST` | PostgreSQL database host (requires PostGIS extension) |
+| `DB_NAME` | PostgreSQL database name |
+| `DB_USER` | PostgreSQL database username |
+| `DB_PASSWORD` | PostgreSQL database password |
+| `SECRET_KEY` | Django secret key (generate a random string) |
+| `ALLOWED_HOSTS` | Comma-separated list of allowed hostnames |
+| `CACHE_DEFAULT` | Redis cache URL (e.g., `redis:6379/0`) |
+| `KEYCLOAK_URL` | Keycloak server URL for SSO (optional) |
+| `KEYCLOAK_REALM` | Keycloak realm name (optional) |
+| `KEYCLOAK_CLIENT_ID` | OIDC client ID (optional) |
+| `KEYCLOAK_CLIENT_SECRET` | OIDC client secret (optional) |
 
-```bash
-# Install dependencies
-composer install
-npm install
+## Architecture
 
-# Build frontend
-npm run build
+This ExApp uses a FastAPI wrapper that bridges Nextcloud's AppAPI with the OpenZaak Django application:
 
-# Watch for changes
-npm run watch
+1. **AppAPI lifecycle** -- Implements `/heartbeat`, `/init`, and `/enabled` endpoints for Nextcloud container management
+2. **Database migration** -- Runs Django migrations during initialization
+3. **Application server** -- Starts OpenZaak using uWSGI as the production WSGI server
+4. **Request proxying** -- Routes incoming requests to the OpenZaak backend
+5. **Health reporting** -- Reports container health status back to Nextcloud
 
-# Run linting
-composer phpcs
-npm run lint
+```
+Nextcloud (AppAPI) --> FastAPI wrapper --> uWSGI --> OpenZaak (Django)
+                                                        |
+                                        PostgreSQL + PostGIS / Redis
 ```
 
-## Related Projects
+## Links
 
-| Project | Description | Links |
-|---------|-------------|-------|
-| **OpenZaak** | ZGW API reference implementation | [Website](https://openzaak.org/) / [Docs](https://open-zaak.readthedocs.io/) / [GitHub](https://github.com/open-zaak/open-zaak) |
-| **Valtimo** | BPM and case management platform | [Website](https://www.valtimo.nl/) / [Docs](https://docs.valtimo.nl/) |
-| **OpenKlant** | Customer interaction registry | [GitHub](https://github.com/maykinmedia/open-klant) |
-| **Open Register** | Nextcloud register management | [GitHub](https://github.com/ConductionNL/openregister) |
+| Resource | URL |
+|---|---|
+| **OpenZaak website** | [openzaak.org](https://openzaak.org/) |
+| **OpenZaak documentation** | [open-zaak.readthedocs.io](https://open-zaak.readthedocs.io/) |
+| **OpenZaak source code** | [github.com/open-zaak/open-zaak](https://github.com/open-zaak/open-zaak) |
+| **Maykin Media** (original developer) | [maykinmedia.nl](https://www.maykinmedia.nl/) |
+| **ZGW API standard** | [vng-realisatie.github.io/gemma-zaken](https://vng-realisatie.github.io/gemma-zaken/) |
+| **This wrapper (GitHub)** | [github.com/ConductionNL/openzaak](https://github.com/ConductionNL/openzaak) |
+| **Nextcloud AppAPI** | [github.com/nextcloud/app_api](https://github.com/nextcloud/app_api) |
 
 ## License
 
-AGPL-3.0 - See [LICENSE](LICENSE) for details.
+EUPL-1.2 -- See [LICENSE](LICENSE) for the full license text.
 
-## Author
+This license applies to the **Nextcloud ExApp wrapper only**. OpenZaak itself is licensed under the [EUPL-1.2](https://github.com/open-zaak/open-zaak/blob/main/LICENSE.md) by Maykin Media.
 
-[Conduction B.V.](https://conduction.nl) - info@conduction.nl
+## Authors
+
+**Wrapper:** [Conduction B.V.](https://conduction.nl) -- info@conduction.nl
+
+**OpenZaak:** [Maykin Media](https://www.maykinmedia.nl/) -- info@maykinmedia.nl
