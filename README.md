@@ -1,4 +1,9 @@
-<p align="center">
+> [!IMPORTANT]
+> ## 🚚 This repository has moved to Codeberg
+>
+> Active development now happens at **https://codeberg.org/Conduction/openzaak**.
+> This GitHub mirror is read-only — issues, pull requests, and new commits should go to Codeberg.
+> Update your remote with: `git remote set-url origin https://codeberg.org/Conduction/openzaak`<p align="center">
   <img src="img/app.svg" alt="OpenZaak logo" width="120">
 </p>
 
