@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ConductionNL/openzaak/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/openzaak?style=flat-square" alt="Release"></a>
+  <a href="https://codeberg.org/Conduction/openzaak/releases"><img src="https://img.shields.io/gitea/v/release/Conduction/openzaak?gitea_url=https%3A%2F%2Fcodeberg.org&style=flat-square" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-EUPL--1.2-blue?style=flat-square" alt="License: EUPL-1.2"></a>
 </p>
 
@@ -127,7 +127,7 @@ Nextcloud (AppAPI) --> FastAPI wrapper --> uWSGI --> OpenZaak (Django)
 | **OpenZaak source code** | [github.com/open-zaak/open-zaak](https://github.com/open-zaak/open-zaak) |
 | **Maykin Media** (original developer) | [maykinmedia.nl](https://www.maykinmedia.nl/) |
 | **ZGW API standard** | [vng-realisatie.github.io/gemma-zaken](https://vng-realisatie.github.io/gemma-zaken/) |
-| **This wrapper (GitHub)** | [github.com/ConductionNL/openzaak](https://github.com/ConductionNL/openzaak) |
+| **This wrapper (Codeberg)** | [codeberg.org/Conduction/openzaak](https://codeberg.org/Conduction/openzaak) |
 | **Nextcloud AppAPI** | [github.com/nextcloud/app_api](https://github.com/nextcloud/app_api) |
 
 ## License

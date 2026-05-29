@@ -23,11 +23,11 @@ This is an ExApp (External Application) - Nextcloud will automatically manage th
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
     <category>office</category>
     <category>integration</category>
-    <website>https://github.com/ConductionNL/OpenZaak</website>
-    <bugs>https://github.com/ConductionNL/OpenZaak/issues</bugs>
-    <repository>https://github.com/ConductionNL/OpenZaak</repository>
+    <website>https://codeberg.org/Conduction/openzaak</website>
+    <bugs>https://codeberg.org/Conduction/openzaak/issues</bugs>
+    <repository>https://codeberg.org/Conduction/openzaak</repository>
 
-    <screenshot>https://raw.githubusercontent.com/ConductionNL/openzaak/main/img/screenshot.png</screenshot>
+    <screenshot>https://codeberg.org/Conduction/openzaak/raw/branch/main/img/screenshot.png</screenshot>
 
     <documentation>
         <user>https://open-zaak.readthedocs.io/</user>
