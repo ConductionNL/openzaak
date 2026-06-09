@@ -4,7 +4,9 @@
     <id>openzaak</id>
     <name>OpenZaak</name>
     <summary>OpenZaak ZGW API integration for Nextcloud</summary>
-    <description><![CDATA[OpenZaak Integration for Nextcloud
+    <description><![CDATA[> ⚠️ **Active development — not for production use yet.** This app is under active development. Although it may carry a stable release status, **please do not use it in production environments before 12 June 2026.** See [conduction.nl/apps](https://conduction.nl/apps) for release planning and what this app does.
+
+OpenZaak Integration for Nextcloud
 
 Integrate OpenZaak case management (Zaakgericht Werken) APIs with your Nextcloud instance.
 
