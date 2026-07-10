@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/app.svg" alt="OpenZaak logo" width="120">
+  <img src="img/app-store.svg" alt="OpenZaak logo" width="80" height="80">
 </p>
 
 <h1 align="center">OpenZaak for Nextcloud</h1>
