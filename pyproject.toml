@@ -1,0 +1,58 @@
+[project]
+name = "openzaak-exapp"
+version = "0.1.0"
+description = "OpenZaak ZGW API ExApp for Nextcloud"
+license = "EUPL-1.2"
+# Floor, not a guess dressed up as one. The runtime is the upstream
+# `openzaak/open-zaak:1.13.0` image, whose Python version this repo does not
+# pin and cannot control across upstream bumps. py310 is the lowest version
+# that image has shipped, so targeting it keeps ruff's pyupgrade rules from
+# emitting syntax a future/older base image cannot execute. Raise it only
+# after measuring `python3 --version` inside the actual image.
+requires-python = ">=3.10"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+src = ["ex_app"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "RUF",  # ruff-specific rules
+    "C90",  # mccabe complexity
+]
+ignore = [
+    "E501",   # line too long (handled by the formatter)
+    "B008",   # function call in argument default — the FastAPI Depends() idiom
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["httpx.*", "fastapi.*", "uvicorn.*"]
+ignore_missing_imports = true
